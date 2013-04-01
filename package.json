@@ -1,0 +1,31 @@
+{
+  "name": "stylify",
+  "description": "browserify v2 plugin for stylus",
+  "author": "Damon Oehlman <damon.oehlman@sidelab.com>",
+  "tags": [
+    "stylus",
+    "css",
+    "browserify",
+    "browserify-transform"
+  ],
+  "version": "0.0.0",
+  "dependencies": {
+    "stylus": "0.32.x",
+    "through": "2.2.x"
+  },
+  "devDependencies": {
+    "tap": "0.4.x",
+    "browserify": "2.11.x"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/DamonOehlman/stylify.git"
+  },
+  "bugs": {
+    "url": "http://github.com/DamonOehlman/stylify/issues"
+  },
+  "scripts": {
+    "test": "./node_modules/.bin/tap test/*.js"
+  },
+  "contributors": []
+}
