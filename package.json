@@ -8,7 +8,7 @@
     "browserify",
     "browserify-transform"
   ],
-  "version": "0.0.0",
+  "version": "0.0.1",
   "dependencies": {
     "stylus": "0.32.x",
     "through": "2.2.x"
