@@ -11,6 +11,6 @@ var css = require('./default.styl'),
 insertCss(css);
 ```
 
-## Known Issues
+## Using in Conjuction with brfs (and other AST focused transforms)
 
-- Currently has a compatibility issue when the [brfs](https://github.com/substack/brfs) transform is also used.
+If you are using stylify or another transform module that works by requiring non-JS files, then it's important to note that `brfs` needs to be applied **after** stylify.  This is because `brfs` will perform analysis on the [AST](http://en.wikipedia.org/wiki/Abstract_syntax_tree) of what it expects will be a JS file.  When the `stylify` transform is applied first, this is fine, but if `brfs` attempts to work it's magic on a raw stylus file your browerification will fail.
