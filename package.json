@@ -1,8 +1,8 @@
 {
   "name": "stylify",
   "description": "browserify v2 plugin for stylus",
-  "author": "Damon Oehlman <damon.oehlman@sidelab.com>",
-  "tags": [
+  "author": "Damon Oehlman <damon.oehlman@gmail.com>",
+  "keywords": [
     "stylus",
     "css",
     "browserify",
@@ -19,13 +19,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/DamonOehlman/stylify.git"
+    "url": "https://bitbucket.org/DamonOehlman/stylify.git"
   },
   "bugs": {
-    "url": "http://github.com/DamonOehlman/stylify/issues"
+    "url": "https://bitbucket.org/DamonOehlman/stylify/issues"
   },
+  "main": "index.js",
   "scripts": {
-    "test": "./node_modules/.bin/tap test/*.js"
+    "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "contributors": []
+  "license": "MIT"
 }
