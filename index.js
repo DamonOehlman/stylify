@@ -1,22 +1,28 @@
-var stylus = require('stylus'),
-    through = require('through');
+/* jshint node: true */
+'use strict';
+
+var stylus = require('stylus');
+var through = require('through');
 
 function compile(file, data) {
-    var renderer = stylus(data, { filename: file });
+  var renderer = stylus(data, { filename: file });
 
-    return 'module.exports = ' + JSON.stringify(renderer.render()) + ';';
+  return 'module.exports = ' + JSON.stringify(renderer.render()) + ';';
 }
 
 module.exports = function (file) {
-    var data = '';
+  var data = '';
 
-    function write (buf) { data += buf; }
-    function end () {
-        this.queue(compile(file, data));
-        this.queue(null);
-    }
+  function write (buf) {
+    data += buf;
+  }
+  
+  function end () {
+    this.queue(compile(file, data));
+    this.queue(null);
+  }
 
-    if (!/\.styl$/.test(file)) return through();
+  if (!/\.styl$/.test(file)) return through();
 
-    return through(write, end);
+  return through(write, end);
 };
