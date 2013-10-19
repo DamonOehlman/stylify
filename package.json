@@ -2,7 +2,7 @@
   "name": "stylify",
   "description": "browserify v2 plugin for stylus",
   "author": "Damon Oehlman <damon.oehlman@gmail.com>",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "dependencies": {
     "stylus": "~0.38.0",
     "through": "2.2.x"
