@@ -9,7 +9,9 @@
   },
   "devDependencies": {
     "tap": "~0.4.4",
-    "browserify": "~2.34.3"
+    "browserify": "~2.34.3",
+    "insert-css": "0.0.0",
+    "crel": "~1.1.0"
   },
   "repository": {
     "type": "git",
@@ -19,7 +21,8 @@
     "url": "https://bitbucket.org/DamonOehlman/stylify/issues"
   },
   "scripts": {
-    "test": "$(npm bin)/tap test/*.js"
+    "test": "$(npm bin)/tap test/*.js",
+    "gendocs": "gendocs > README.md"
   },
   "main": "index.js",
   "keywords": [
