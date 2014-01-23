@@ -23,12 +23,14 @@
 **/
 
 var stylus = require('stylus');
+var cleanCss = require('clean-css');
 var through = require('through');
 
 function compile(file, data) {
-  var renderer = stylus(data, { filename: file });
+  var compiled = stylus(data, { filename: file }).render();
+  var minified = (new cleanCss).minify(compiled);
 
-  return 'module.exports = ' + JSON.stringify(renderer.render()) + ';';
+  return 'module.exports = ' + JSON.stringify(minified) + ';';
 }
 
 module.exports = function (file) {
