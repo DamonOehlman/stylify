@@ -20,7 +20,8 @@
     "url": "https://bitbucket.org/DamonOehlman/stylify/issues"
   },
   "scripts": {
-    "gendocs": "gendocs > README.md"
+    "gendocs": "gendocs > README.md",
+    "start": "beefy examples/simple.js -- -t ./"
   },
   "main": "index.js",
   "keywords": [
