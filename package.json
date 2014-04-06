@@ -4,14 +4,12 @@
   "author": "Damon Oehlman <damon.oehlman@gmail.com>",
   "version": "0.1.2",
   "dependencies": {
-    "stylus": "~0.38.0",
-    "clean-css": "~2.0.7",
-    "through": "2.2.x"
+    "stylus": "~0.43.0",
+    "clean-css": "^2",
+    "through": "^2"
   },
   "devDependencies": {
-    "tap": "~0.4.4",
-    "browserify": "~2.34.3",
-    "insert-css": "0.0.0",
+    "insert-css": "~0.1.1",
     "crel": "~1.1.0"
   },
   "repository": {
@@ -22,7 +20,6 @@
     "url": "https://bitbucket.org/DamonOehlman/stylify/issues"
   },
   "scripts": {
-    "test": "$(npm bin)/tap test/*.js",
     "gendocs": "gendocs > README.md"
   },
   "main": "index.js",
