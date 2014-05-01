@@ -4,7 +4,7 @@
   "author": "Damon Oehlman <damon.oehlman@gmail.com>",
   "version": "0.1.3",
   "dependencies": {
-    "stylus": "~0.43.0",
+    "stylus": "~0.44",
     "clean-css": "^2",
     "through": "^2"
   },
