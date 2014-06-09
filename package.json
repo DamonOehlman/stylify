@@ -1,6 +1,6 @@
 {
   "name": "stylify",
-  "description": "browserify v2 plugin for stylus",
+  "description": "browserify plugin for stylus",
   "author": "Damon Oehlman <damon.oehlman@gmail.com>",
   "version": "0.1.4",
   "dependencies": {
