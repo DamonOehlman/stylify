@@ -12,13 +12,6 @@
     "insert-css": "~0.1.1",
     "crel": "~1.1.0"
   },
-  "repository": {
-    "type": "git",
-    "url": "https://bitbucket.org/DamonOehlman/stylify.git"
-  },
-  "bugs": {
-    "url": "https://bitbucket.org/DamonOehlman/stylify/issues"
-  },
   "scripts": {
     "gendocs": "gendocs > README.md",
     "start": "beefy examples/simple.js -- -t ./"
@@ -30,5 +23,16 @@
     "browserify",
     "browserify-transform"
   ],
-  "license": "MIT"
+  "license": "MIT",
+  "directories": {
+    "example": "examples"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/DamonOehlman/stylify.git"
+  },
+  "bugs": {
+    "url": "https://github.com/DamonOehlman/stylify/issues"
+  },
+  "homepage": "https://github.com/DamonOehlman/stylify"
 }
