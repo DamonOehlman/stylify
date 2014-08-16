@@ -9,8 +9,8 @@
     "through": "^2"
   },
   "devDependencies": {
-    "insert-css": "~0.1.1",
-    "crel": "~1.1.0"
+    "crel": "~1.1.0",
+    "insert-css": "^0.2.0"
   },
   "scripts": {
     "gendocs": "gendocs > README.md",
