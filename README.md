@@ -5,7 +5,7 @@ browserify v2 plugin for [stylus](https://github.com/LearnBoost/stylus).
 
 [![NPM](https://nodei.co/npm/stylify.png)](https://nodei.co/npm/stylify/)
 
-[![unstable](https://img.shields.io/badge/stability-unstable-yellowgreen.svg)](https://github.com/badges/stability-badges) 
+[![unstable](https://img.shields.io/badge/stability-unstable-yellowgreen.svg)](https://github.com/dominictarr/stability#unstable) 
 
 ## Example Usage
 
@@ -27,7 +27,7 @@ var elements = ['square', 'rect'].map(function(cls) {
 insertCss(require('./simple.styl'));
 ```
 
-You can see the final statement uses a familar node `require` call to 
+You can see the final statement uses a familar node `require` call to
 bring in a stylus stylesheet:
 
 ```css
@@ -51,16 +51,17 @@ body
   height: sidelength
 ```
 
-#####Adding paths for @require
+##### Adding paths for @require
 Add your stylify config to your application package.json
 add a paths array to your mixins folder etc. Paths can be specified in glob notation.
 
 ```json
 "stylify": {
-    "paths": [
-      "application/stylus/**/"
-    ]
-  }
+  "paths": [
+    "application/stylus/**/"
+  ]
+}
+
 ```
 
 ## License(s)
