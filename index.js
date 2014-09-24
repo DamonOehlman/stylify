@@ -25,9 +25,32 @@
 var stylus = require('stylus');
 var cleanCss = require('clean-css');
 var through = require('through');
+var glob = require('glob');
+var _ = require('lodash');
+
+var appPackage = require(process.cwd() + '/package.json');
+
+
+var paths = null;
+
+if(!!appPackage.stylify && appPackage.stylify.paths instanceof Array){
+  paths = _.chain(
+    appPackage.stylify.paths.map(function(path){
+      return glob.sync(path);
+    })
+  )
+  .flatten()
+  .uniq()
+  .value();
+}
 
 function compile(file, data) {
-  var compiled = stylus(data, { filename: file }).render();
+
+  var style = stylus(data, { filename: file });
+  if(!!paths) { 
+    style.set('paths', paths); 
+  }
+  var compiled = style.render();
   var minified = (new cleanCss).minify(compiled);
 
   return 'module.exports = ' + JSON.stringify(minified) + ';';
