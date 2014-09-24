@@ -1,7 +1,7 @@
 {
   "name": "stylify",
   "description": "browserify plugin for stylus",
-  "version": "0.1.6",
+  "version": "1.0.0",
   "dependencies": {
     "clean-css": "^2",
     "stylus": "^0.47.3",
