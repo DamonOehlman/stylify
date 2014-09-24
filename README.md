@@ -51,6 +51,18 @@ body
   height: sidelength
 ```
 
+#####Adding paths for @require
+Add your stylify config to your application package.json
+add a paths array to your mixins folder etc. Paths can be specified in glob notation.
+
+```json
+"stylify": {
+    "paths": [
+      "application/stylus/**/"
+    ]
+  }
+```
+
 ## License(s)
 
 ### MIT
