@@ -15,10 +15,16 @@
 
   <<< examples/simple.js
 
-  You can see the final statement uses a familar node `require` call to 
+  You can see the final statement uses a familar node `require` call to
   bring in a stylus stylesheet:
 
   <<<css examples/simple.styl
+
+  ##### Adding paths for @require
+  Add your stylify config to your application package.json
+  add a paths array to your mixins folder etc. Paths can be specified in glob notation.
+
+  <<< docs/stylify-package.json
 
 **/
 
@@ -47,8 +53,8 @@ if(!!appPackage.stylify && appPackage.stylify.paths instanceof Array){
 function compile(file, data) {
 
   var style = stylus(data, { filename: file });
-  if(!!paths) { 
-    style.set('paths', paths); 
+  if(!!paths) {
+    style.set('paths', paths);
   }
   var compiled = style.render();
   var minified = (new cleanCss).minify(compiled);

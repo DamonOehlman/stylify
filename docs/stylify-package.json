@@ -1,0 +1,5 @@
+"stylify": {
+  "paths": [
+    "application/stylus/**/"
+  ]
+}
