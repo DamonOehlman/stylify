@@ -5,7 +5,7 @@ browserify v2 plugin for [stylus](https://github.com/LearnBoost/stylus).
 
 [![NPM](https://nodei.co/npm/stylify.png)](https://nodei.co/npm/stylify/)
 
-[![unstable](https://img.shields.io/badge/stability-unstable-yellowgreen.svg)](https://github.com/dominictarr/stability#unstable) 
+[![unstable](https://img.shields.io/badge/stability-unstable-yellowgreen.svg)](https://github.com/dominictarr/stability#unstable)
 
 ## Example Usage
 
@@ -62,6 +62,39 @@ add a paths array to your mixins folder etc. Paths can be specified in glob nota
   ]
 }
 
+```
+
+##### Advanced options
+
+Options can be [passed](https://github.com/substack/node-browserify#user-content-btransformtr-opts) in the follwing form:
+
+```js
+{
+  set    : { setting: value },
+  include: [ path, ... ],
+  import : [ path, ... ],
+  define : { key: value },
+  use    : [ module, ... ]
+}
+```
+
+where each key corresponds to a stylus method [described here](http://learnboost.github.io/stylus/docs/js.html).
+
+Here is an example using the javascript api:
+
+```js
+
+var nib = require 'nib';
+var browserify = require 'browserify';
+
+// create a browserify bundle
+var bundle = browserify({ ... });
+
+// register the stylify tranforms with options
+bundle.transform('stylify', {
+  use: [ nib() ],
+  set: { compress: true }
+});
 ```
 
 ## License(s)
