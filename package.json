@@ -14,7 +14,6 @@
     "insert-css": "^0.2.0"
   },
   "scripts": {
-    "gendocs": "gendocs > README.md",
     "start": "beefy examples/simple.js -- -t ./"
   },
   "main": "index.js",
