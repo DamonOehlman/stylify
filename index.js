@@ -28,16 +28,14 @@
 
 **/
 
-var stylus = require('stylus');
-var cleanCss = require('clean-css');
+var stylus  = require('stylus');
 var through = require('through');
-var glob = require('glob');
-var _ = require('lodash');
+var glob    = require('glob');
+var _       = require('lodash');
+var convert = require('convert-source-map');
 
-var appPackage = require(process.cwd() + '/package.json');
-
-
-var paths = null;
+var appPackage = require(process.cwd() + '/package.json')
+    , paths    = [];
 
 if(!!appPackage.stylify && appPackage.stylify.paths instanceof Array){
   paths = _.chain(
@@ -50,31 +48,62 @@ if(!!appPackage.stylify && appPackage.stylify.paths instanceof Array){
   .value();
 }
 
-function compile(file, data) {
+function applyOptions(stylus, options) {
+  _(['set', 'include', 'import', 'define', 'use']).forEach(function (method) {
+    var option = options[method];
 
-  var style = stylus(data, { filename: file });
-  if(!!paths) {
-    style.set('paths', paths);
-  }
-  var compiled = style.render();
-  var minified = (new cleanCss).minify(compiled);
-
-  return 'module.exports = ' + JSON.stringify(minified) + ';';
+    if (_.isArray(option)) {
+      for (var i = 0; i < option.length; i++)
+        stylus[method](option[i]);
+    }
+    else {
+      for (var prop in option)
+        stylus[method](prop, option[prop]);
+    }
+  });
 }
 
-module.exports = function (file) {
+function compile(file, data, options) {
+  var style = stylus(data);
+
+  applyOptions(style, options);
+
+  style
+    .set('filename', file);
+
+    // TODO: can't get sourecmaps to work yet
+    //.set('sourcemap', { inline: true });
+
+  var compiled = style.render();
+
+  return 'module.exports = ' + JSON.stringify(compiled) + '\n';
+}
+
+module.exports = function (file, options) {
+  if (!/\.styl$/.test(file)) return through();
+
+  options = _.merge({
+    set    : { paths: paths },
+    include: [],
+    import : [],
+    define : {},
+    use    : []
+  }, options || {});
+
   var data = '';
 
-  function write (buf) {
-    data += buf;
-  }
-
+  function write (buf) { data += buf }
   function end () {
-    this.queue(compile(file, data));
+    var src;
+
+    try {
+      src = compile(file, data, options);
+    } catch (error) {
+      this.emit('error', error);
+    }
+    this.queue(src);
     this.queue(null);
   }
-
-  if (!/\.styl$/.test(file)) return through();
 
   return through(write, end);
 };

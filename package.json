@@ -4,10 +4,10 @@
   "version": "1.0.0",
   "dependencies": {
     "clean-css": "^2",
-    "stylus": "^0.47.3",
-    "through": "^2",
     "glob": "~4.0.6",
-    "lodash": "~2.4.1"
+    "lodash": "~2.4.1",
+    "stylus": "^0.49.3",
+    "through": "^2"
   },
   "devDependencies": {
     "crel": "~1.1.0",
