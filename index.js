@@ -5,7 +5,6 @@ var stylus  = require('stylus');
 var through = require('through');
 var glob    = require('glob');
 var _       = require('lodash');
-var convert = require('convert-source-map');
 
 var appPackage = require(process.cwd() + '/package.json')
     , paths    = [];
