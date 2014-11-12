@@ -28,7 +28,9 @@ function getPackageOptions () {
     return options;
   }
 
-  options.paths = parsePaths(appPackage.stylify.paths);
+  options.set = {
+    paths: parsePaths(appPackage.stylify.paths)
+  };
 
   return options;
 }
