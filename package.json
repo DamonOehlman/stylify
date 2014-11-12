@@ -11,10 +11,12 @@
   },
   "devDependencies": {
     "crel": "~1.1.0",
-    "insert-css": "^0.2.0"
+    "insert-css": "^0.2.0",
+    "tap": "^0.4.13"
   },
   "scripts": {
-    "start": "beefy examples/simple.js -- -t ./"
+    "start": "beefy examples/simple.js -- -t ./",
+    "test": "tap test/*.js"
   },
   "main": "index.js",
   "keywords": [

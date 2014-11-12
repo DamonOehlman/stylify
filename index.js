@@ -6,8 +6,12 @@ var through = require('through');
 var glob    = require('glob');
 var _       = require('lodash');
 
-var appPackage = require(process.cwd() + '/package.json')
+var appPackage = {}
     , paths    = [];
+
+try {
+  appPackage = require(process.cwd() + '/package.json');
+} catch (e) {}
 
 if(!!appPackage.stylify && appPackage.stylify.paths instanceof Array){
   paths = _.chain(
