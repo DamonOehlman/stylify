@@ -1,27 +1,44 @@
 /* jshint node: true */
 'use strict';
 
-var stylus  = require('stylus');
-var through = require('through');
-var glob    = require('glob');
-var _       = require('lodash');
+var stylus  = require('stylus')
+  , through = require('through')
+  , glob    = require('glob')
+  , _       = require('lodash')
+  , convert = require('convert-source-map');
 
-var appPackage = {}
-    , paths    = [];
 
-try {
-  appPackage = require(process.cwd() + '/package.json');
-} catch (e) {}
+var defaultOptions = {
+  set    : { paths: [] },
+  include: [],
+  import : [],
+  define : {},
+  use    : []
+};
 
-if(!!appPackage.stylify && appPackage.stylify.paths instanceof Array){
-  paths = _.chain(
-    appPackage.stylify.paths.map(function(path){
-      return glob.sync(path);
-    })
-  )
-  .flatten()
-  .uniq()
-  .value();
+// TODO: allow other options than just paths
+function getPackageOptions () {
+  var appPackage
+    , options = {};
+
+  try {
+    appPackage = require(process.cwd() + '/package.json');
+    if (!appPackage.stylify) throw new Error();
+  } catch (e) {
+    return options;
+  }
+
+  options.paths = parsePaths(appPackage.stylify.paths);
+
+  return options;
+}
+
+function parsePaths(paths) {
+  paths = (_.isArray(paths) ? paths : []).map(function (path) {
+    return glob.sync(path);
+  });
+
+  return _.chain(paths).flatten().uniq().value();
 }
 
 function applyOptions(stylus, options) {
@@ -44,27 +61,37 @@ function compile(file, data, options) {
 
   applyOptions(style, options);
 
-  style
-    .set('filename', file);
+  style.set('filename', file);
 
-    // TODO: can't get sourecmaps to work yet
-    //.set('sourcemap', { inline: true });
+  // enable source maps unless explicitly disabled
+  if (style.get('sourcemap') !== false)
+    style.set('sourcemap', { inline: true } );
 
-  var compiled = style.render();
+  // enable compression unless explicitly disabled
+  if (style.get('compress') !== false)
+    style.set('compress', true );
 
-  return 'module.exports = ' + JSON.stringify(compiled) + '\n';
+  var compiled  = style.render()
+    , sourcemap = convert.fromComment(compiled);
+
+  if (style.get('compress') === false)
+    compiled = 'module.exports = ' + JSON.stringify(compiled) + '\n';
+  else
+    compiled = 'module.exports = ' + JSON.stringify(compiled) + '\n' +
+                                     sourcemap.toComment()    + '\n';
+
+  return compiled;
 }
 
 module.exports = function (file, options) {
   if (!/\.styl$/.test(file)) return through();
 
-  options = _.merge({
-    set    : { paths: paths },
-    include: [],
-    import : [],
-    define : {},
-    use    : []
-  }, options || {});
+  var packageOptions = _.merge(
+    defaultOptions,
+    getPackageOptions()
+  );
+
+  options = _.merge(packageOptions, options || {});
 
   var data = '';
 

@@ -18,27 +18,47 @@ function transformExampleFile(fileName, options, runTests) {
 }
 
 test('stylify transforms to a css string wrapped in a module', function (t) {
-  t.plan(1);
+  t.plan(2);
 
   transformExampleFile("test.styl", null, function (transformed) {
+    var parts = transformed.split('/*#');
+
     t.equal(
-      transformed,
-      "module.exports = \"body {\\n  color: rgba(255,255,255,0.5);\\n}\\n\"\n"
+      parts[0],
+      "module.exports = \"body{color:rgba(255,255,255,0.5)}"
+    );
+
+    t.ok(/sourceMappingURL/.test(parts[1]), "source map is included");
+  });
+});
+
+test("it doesn't compress the css if compress is set to true", function (t) {
+  t.plan(1);
+
+  var options = {
+    set: { compress: false }
+  };
+
+  transformExampleFile("test.styl", options, function (transformed) {
+    var parts = transformed.split('/*#');
+
+    t.equal(
+      parts[0],
+      "module.exports = \"body {\\n  color: rgba(255,255,255,0.5);\\n}\\n"
     );
   });
 });
 
-test('it compresses the css if compress is set to true', function (t) {
+test("it doesn't include source maps if disabled", function (t) {
   t.plan(1);
 
   var options = {
-    set: { compress: true }
+    set: { sourcemap: false }
   };
 
   transformExampleFile("test.styl", options, function (transformed) {
-    t.equal(
-      transformed,
-      "module.exports = \"body{color:rgba(255,255,255,0.5)}\"\n"
-    );
+    var parts = transformed.split('/*#');
+
+    t.notOk(/sourceMappingURL/.test(transformed), "source map not is included");
   });
 });
