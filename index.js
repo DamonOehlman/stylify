@@ -1,11 +1,10 @@
 /* jshint node: true */
 'use strict';
 
-var stylus  = require('stylus')
-  , through = require('through')
-  , glob    = require('glob')
-  , _       = require('lodash')
-  , convert = require('convert-source-map');
+var stylus      = require('stylus')
+  , through     = require('through')
+  , glob        = require('glob')
+  , _           = require('lodash');
 
 
 var defaultOptions = {
@@ -63,26 +62,25 @@ function compile(file, data, options) {
 
   applyOptions(style, options);
 
-  style.set('filename', file);
+  var sourcemapSettings = style.get('sourcemap');
 
-  // enable source maps unless explicitly disabled
-  if (style.get('sourcemap') !== false)
-    style.set('sourcemap', { inline: true } );
+  // always use inline source maps if enabled
+  if (sourcemapSettings) {
+    _.isObject(sourcemapSettings)
+      ? _.merge(sourcemapSettings, { inline: true, comment: true })
+      : sourcemapSettings =        { inline: true, comment: true };
+
+    style.set('sourcemap', sourcemapSettings);
+  }
 
   // enable compression unless explicitly disabled
   if (style.get('compress') !== false)
     style.set('compress', true );
 
-  var compiled  = style.render()
-    , sourcemap = convert.fromComment(compiled);
+  style.set('filename', file);
+  var compiled  = style.render();
 
-  if (style.get('compress') === false)
-    compiled = 'module.exports = ' + JSON.stringify(compiled) + '\n';
-  else
-    compiled = 'module.exports = ' + JSON.stringify(compiled) + '\n' +
-                                     sourcemap.toComment()    + '\n';
-
-  return compiled;
+  return 'module.exports = ' + JSON.stringify(compiled) + '\n';
 }
 
 module.exports = function (file, options) {

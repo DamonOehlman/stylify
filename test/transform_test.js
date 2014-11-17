@@ -21,14 +21,12 @@ test('stylify transforms to a css string wrapped in a module', function (t) {
   t.plan(2);
 
   transformExampleFile("test.styl", null, function (transformed) {
-    var parts = transformed.split('/*#');
-
     t.equal(
-      parts[0],
-      "module.exports = \"body{color:rgba(255,255,255,0.5)}"
+      transformed,
+      "module.exports = \"body{color:rgba(255,255,255,0.5)}\"\n"
     );
 
-    t.ok(/sourceMappingURL/.test(parts[1]), "source map is included");
+    t.notOk(/sourceMappingURL/.test(transformed), "source map is not included");
   });
 });
 
@@ -40,25 +38,21 @@ test("it doesn't compress the css if compress is set to true", function (t) {
   };
 
   transformExampleFile("test.styl", options, function (transformed) {
-    var parts = transformed.split('/*#');
-
     t.equal(
-      parts[0],
-      "module.exports = \"body {\\n  color: rgba(255,255,255,0.5);\\n}\\n"
+      transformed,
+      "module.exports = \"body {\\n  color: rgba(255,255,255,0.5);\\n}\\n\"\n"
     );
   });
 });
 
-test("it doesn't include source maps if disabled", function (t) {
+test("it includes inline source maps if enabled", function (t) {
   t.plan(1);
 
   var options = {
-    set: { sourcemap: false }
+    set: { sourcemap: { comment: false } }
   };
 
   transformExampleFile("test.styl", options, function (transformed) {
-    var parts = transformed.split('/*#');
-
-    t.notOk(/sourceMappingURL/.test(transformed), "source map not is included");
+    t.ok(/sourceMappingURL/.test(transformed), "source map is included");
   });
 });
