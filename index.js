@@ -4,7 +4,11 @@
 var stylus      = require('stylus')
   , through     = require('through')
   , glob        = require('glob')
-  , _           = require('lodash');
+  , flatten     = require('lodash.flatten')
+  , uniq        = require('lodash.uniq')
+  , merge       = require('lodash.merge')
+  , isObject    = require('lodash.isobject')
+  , isArray     = require('lodash.isarray')
 
 
 var defaultOptions = {
@@ -35,18 +39,18 @@ function getPackageOptions () {
 }
 
 function parsePaths(paths) {
-  paths = (_.isArray(paths) ? paths : []).map(function (path) {
+  paths = (isArray(paths) ? paths : []).map(function (path) {
     return glob.sync(path);
   });
 
-  return _.chain(paths).flatten().uniq().value();
+  return uniq(flatten(paths));
 }
 
 function applyOptions(stylus, options) {
-  _(['set', 'include', 'import', 'define', 'use']).forEach(function (method) {
+  ['set', 'include', 'import', 'define', 'use'].forEach(function (method) {
     var option = options[method];
 
-    if (_.isArray(option)) {
+    if (isArray(option)) {
       for (var i = 0; i < option.length; i++)
         stylus[method](option[i]);
     }
@@ -66,8 +70,8 @@ function compile(file, data, options) {
 
   // always use inline source maps if enabled
   if (sourcemapSettings) {
-    _.isObject(sourcemapSettings)
-      ? _.merge(sourcemapSettings, { inline: true, comment: true })
+    isObject(sourcemapSettings)
+      ? merge(sourcemapSettings, { inline: true, comment: true })
       : sourcemapSettings =        { inline: true, comment: true };
 
     style.set('sourcemap', sourcemapSettings);
@@ -86,12 +90,12 @@ function compile(file, data, options) {
 module.exports = function (file, options) {
   if (!/\.styl$/.test(file)) return through();
 
-  var packageOptions = _.merge(
+  var packageOptions = merge(
     defaultOptions,
     getPackageOptions()
   );
 
-  options = _.merge(packageOptions, options || {});
+  options = merge(packageOptions, options || {});
 
   var data = '';
 
