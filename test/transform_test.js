@@ -1,7 +1,7 @@
 var test    = require("tap").test
   , fs      = require('fs')
   , path    = require('path')
-  , through = require('through')
+  , concat = require('concat-stream')
   , stylify = require('..');
 
 
@@ -11,10 +11,7 @@ function transformExampleFile(fileName, options, runTests) {
   var file = path.join(__dirname, '../examples', fileName);
   fs.createReadStream(file)
       .pipe(stylify(file, options))
-      .pipe(through(write, end));
-
-  function write (buf) { data += buf; }
-  function end ()      { runTests(data); }
+      .pipe(concat({encoding: 'string'}, runTests));
 }
 
 test('stylify transforms to a css string wrapped in a module', function (t) {

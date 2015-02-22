@@ -2,7 +2,7 @@
 'use strict';
 
 var stylus = require('stylus'),
-  through = require('through'),
+  through = require('through2'),
   glob = require('glob'),
   resolve = require('resolve'),
   flatten = require('lodash.flatten'),
@@ -125,16 +125,17 @@ module.exports = function (file, options) {
   options.use = resolveUses(options.use);
   options.set.paths = parsePaths(options.set.paths);
 
-  function write(buf) {
-    data += buf
+  function write(buf, enc, cb) {
+    data += buf;
+    cb();
   }
 
-  function end() {
+  function end(cb) {
     try {
-      this.queue(compile(file, data, options));
-      this.queue(null);
+      this.push(compile(file, data, options));
+      cb();
     } catch (err) {
-      this.emit('error', err);
+      return cb(err);
     }
   }
 

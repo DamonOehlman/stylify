@@ -10,9 +10,10 @@
     "lodash.uniq": "^3.0.1",
     "resolve": "^1.1.5",
     "stylus": "^0.50.0",
-    "through": "^2.0.0"
+    "through2": "^0.6.3"
   },
   "devDependencies": {
+    "concat-stream": "^1.4.7",
     "crel": "^2.1.8",
     "insert-css": "^0.2.0",
     "tap": "^0.6.0"
