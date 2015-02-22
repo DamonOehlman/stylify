@@ -4,11 +4,11 @@
 var stylus = require('stylus'),
   through = require('through'),
   glob = require('glob'),
+  resolve = require('resolve'),
   flatten = require('lodash.flatten'),
   uniq = require('lodash.uniq'),
   merge = require('lodash.merge'),
   isArray = require('lodash.isarray');
-
 
 var defaultOptions = {
   set: {
@@ -62,7 +62,12 @@ function resolveUses(uses) {
   }
   return uses.map(function(mod) {
     if (typeof mod === 'string') {
-      return require(mod);
+      mod = require(resolve.sync(mod, {
+        basedir: process.cwd()
+      }));
+    }
+    if (typeof mod === 'function') {
+      mod = mod();
     }
     return mod;
   });
@@ -118,9 +123,7 @@ module.exports = function (file, options) {
 
   options = merge(packageOptions, options || {});
   options.use = resolveUses(options.use);
-  if (options.set.paths) {
-    options.set.paths = parsePaths(options.set.paths);
-  }
+  options.set.paths = parsePaths(options.set.paths);
 
   function write(buf) {
     data += buf
