@@ -31,7 +31,6 @@ function getPackageOptions() {
   var pkg;
   var options = {};
 
-  console.log(process.cwd() + '/package.json');
   try {
     pkg = require(process.cwd() + '/package.json');
   } catch (e) {}
