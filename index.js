@@ -1,60 +1,83 @@
 /* jshint node: true */
 'use strict';
 
-var stylus      = require('stylus')
-  , through     = require('through')
-  , glob        = require('glob')
-  , flatten     = require('lodash.flatten')
-  , uniq        = require('lodash.uniq')
-  , merge       = require('lodash.merge')
-  , isObject    = require('lodash.isobject')
-  , isArray     = require('lodash.isarray')
+var stylus = require('stylus'),
+  through = require('through'),
+  glob = require('glob'),
+  flatten = require('lodash.flatten'),
+  uniq = require('lodash.uniq'),
+  merge = require('lodash.merge'),
+  isObject = require('lodash.isobject'),
+  isArray = require('lodash.isarray')
 
 
 var defaultOptions = {
-  set    : { paths: [] },
+  set: {
+    paths: []
+  },
   include: [],
-  import : [],
-  define : {},
-  use    : []
+  import: [],
+  define: {},
+  use: []
 };
 
-// TODO: allow other options than just paths
-function getPackageOptions () {
-  var appPackage
-    , options = {};
+var defaultSourceMapSettings = {
+  inline: true,
+  comment: true
+};
 
+// TODO: allow all options
+function getPackageOptions() {
+  var pkg;
+  var options = {};
+
+  console.log(process.cwd() + '/package.json');
   try {
-    appPackage = require(process.cwd() + '/package.json');
-    if (!appPackage.stylify) throw new Error();
-  } catch (e) {
+    pkg = require(process.cwd() + '/package.json');
+  } catch (e) {}
+
+  if (!pkg || !pkg.stylify) {
     return options;
   }
 
-  options.set = {
-    paths: parsePaths(appPackage.stylify.paths)
-  };
-
+  if (pkg.stylify.use) {
+    options.use = pkg.stylify.use;
+  }
+  if (pkg.stylify.paths) {
+    options.set = {
+      paths: pkg.stylify.paths
+    };
+  }
   return options;
 }
 
 function parsePaths(paths) {
-  paths = (isArray(paths) ? paths : []).map(function (path) {
+  paths = isArray(paths) ? paths : [];
+  return uniq(flatten(paths.map(function(path) {
     return glob.sync(path);
-  });
+  })));
+}
 
-  return uniq(flatten(paths));
+function resolveUses(uses) {
+  if (!isArray(uses)) {
+    uses = [uses];
+  }
+  return uses.map(function(mod) {
+    if (typeof mod === 'string') {
+      return require(mod);
+    }
+    return mod;
+  });
 }
 
 function applyOptions(stylus, options) {
-  ['set', 'include', 'import', 'define', 'use'].forEach(function (method) {
+  ['set', 'include', 'import', 'define', 'use'].forEach(function(method) {
     var option = options[method];
 
     if (isArray(option)) {
       for (var i = 0; i < option.length; i++)
         stylus[method](option[i]);
-    }
-    else {
+    } else {
       for (var prop in option)
         stylus[method](prop, option[prop]);
     }
@@ -66,50 +89,51 @@ function compile(file, data, options) {
 
   applyOptions(style, options);
 
-  var sourcemapSettings = style.get('sourcemap');
+  var sourceMapSettings = style.get('sourcemap');
 
   // always use inline source maps if enabled
-  if (sourcemapSettings) {
-    isObject(sourcemapSettings)
-      ? merge(sourcemapSettings, { inline: true, comment: true })
-      : sourcemapSettings =        { inline: true, comment: true };
-
-    style.set('sourcemap', sourcemapSettings);
+  if (isObject(sourceMapSettings)) {
+    sourceMapSettings = merge(sourceMapSettings, defaultSourceMapSettings);
+  } else {
+    sourceMapSettings = defaultSourceMapSettings;
   }
 
+  style.set('sourcemap', sourceMapSettings);
+
   // enable compression unless explicitly disabled
-  if (style.get('compress') !== false)
-    style.set('compress', true );
-
+  style.set('compress', style.get('compress') !== false);
   style.set('filename', file);
-  var compiled  = style.render();
+  var compiled = style.render();
 
-  return 'module.exports = ' + JSON.stringify(compiled) + '\n';
+  return 'module.exports = ' + JSON.stringify(compiled) + ';';
 }
 
 module.exports = function (file, options) {
   if (!/\.styl$/.test(file)) return through();
 
+  var data = '';
   var packageOptions = merge(
     defaultOptions,
     getPackageOptions()
   );
 
   options = merge(packageOptions, options || {});
+  options.use = resolveUses(options.use);
+  if (options.set.paths) {
+    options.set.paths = parsePaths(options.set.paths);
+  }
 
-  var data = '';
+  function write(buf) {
+    data += buf
+  }
 
-  function write (buf) { data += buf }
-  function end () {
-    var src;
-
+  function end() {
     try {
-      src = compile(file, data, options);
-    } catch (error) {
-      this.emit('error', error);
+      this.queue(compile(file, data, options));
+      this.queue(null);
+    } catch (err) {
+      this.emit('error', err);
     }
-    this.queue(src);
-    this.queue(null);
   }
 
   return through(write, end);
