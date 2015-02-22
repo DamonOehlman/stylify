@@ -23,7 +23,7 @@ test('stylify transforms to a css string wrapped in a module', function (t) {
   transformExampleFile("test.styl", null, function (transformed) {
     t.equal(
       transformed,
-      "module.exports = \"body{color:rgba(255,255,255,0.5)}\"\n"
+      "module.exports = \"body{color:rgba(255,255,255,0.5)}\";"
     );
 
     t.notOk(/sourceMappingURL/.test(transformed), "source map is not included");
@@ -40,7 +40,7 @@ test("it doesn't compress the css if compress is set to true", function (t) {
   transformExampleFile("test.styl", options, function (transformed) {
     t.equal(
       transformed,
-      "module.exports = \"body {\\n  color: rgba(255,255,255,0.5);\\n}\\n\"\n"
+      "module.exports = \"body {\\n  color: rgba(255,255,255,0.5);\\n}\";"
     );
   });
 });

@@ -7,8 +7,7 @@ var stylus = require('stylus'),
   flatten = require('lodash.flatten'),
   uniq = require('lodash.uniq'),
   merge = require('lodash.merge'),
-  isObject = require('lodash.isobject'),
-  isArray = require('lodash.isarray')
+  isArray = require('lodash.isarray');
 
 
 var defaultOptions = {
@@ -91,9 +90,10 @@ function compile(file, data, options) {
   var sourceMapSettings = style.get('sourcemap');
 
   // always use inline source maps if enabled
-  if (isObject(sourceMapSettings)) {
+  if (typeof sourceMapSettings === 'object') {
     sourceMapSettings = merge(sourceMapSettings, defaultSourceMapSettings);
-  } else {
+  }
+  if (sourceMapSettings === true) {
     sourceMapSettings = defaultSourceMapSettings;
   }
 
@@ -102,7 +102,7 @@ function compile(file, data, options) {
   // enable compression unless explicitly disabled
   style.set('compress', style.get('compress') !== false);
   style.set('filename', file);
-  var compiled = style.render();
+  var compiled = style.render().trim();
 
   return 'module.exports = ' + JSON.stringify(compiled) + ';';
 }
