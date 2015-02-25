@@ -89,7 +89,6 @@ function applyOptions(stylus, options) {
 
 function compile(file, data, options) {
   var style = stylus(data);
-
   applyOptions(style, options);
 
   var sourceMapSettings = style.get('sourcemap');
@@ -108,8 +107,10 @@ function compile(file, data, options) {
   style.set('compress', style.get('compress') !== false);
   style.set('filename', file);
   var compiled = style.render().trim();
-
-  return 'module.exports = ' + JSON.stringify(compiled) + ';';
+  return {
+    css: 'module.exports = ' + JSON.stringify(compiled) + ';',
+    deps: style.deps()
+  };
 }
 
 module.exports = function (file, options) {
@@ -126,17 +127,22 @@ module.exports = function (file, options) {
   options.set.paths = parsePaths(options.set.paths);
 
   function write(buf, enc, cb) {
-    data += buf;
+    data += buf.toString();
     cb();
   }
 
   function end(cb) {
+    var out;
     try {
-      this.push(compile(file, data, options));
-      cb();
+      out = compile(file, data, options);
     } catch (err) {
       return cb(err);
     }
+    out.deps.forEach(function(dep){
+      this.emit('file', dep);
+    }, this);
+    this.push(out.css);
+    cb();
   }
 
   return through(write, end);
