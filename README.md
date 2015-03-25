@@ -101,7 +101,7 @@ bundle.transform('stylify', {
 
 ### MIT
 
-Copyright (c) 2014 Damon Oehlman <damon.oehlman@gmail.com>
+Copyright (c) 2014-2015 Damon Oehlman <damon.oehlman@gmail.com> and contributors
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
