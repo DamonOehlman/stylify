@@ -1,7 +1,7 @@
 var test    = require("tap").test
   , fs      = require('fs')
   , path    = require('path')
-  , through = require('through')
+  , concat = require('concat-stream')
   , stylify = require('..');
 
 
@@ -11,10 +11,7 @@ function transformExampleFile(fileName, options, runTests) {
   var file = path.join(__dirname, '../examples', fileName);
   fs.createReadStream(file)
       .pipe(stylify(file, options))
-      .pipe(through(write, end));
-
-  function write (buf) { data += buf; }
-  function end ()      { runTests(data); }
+      .pipe(concat({encoding: 'string'}, runTests));
 }
 
 test('stylify transforms to a css string wrapped in a module', function (t) {
@@ -23,7 +20,7 @@ test('stylify transforms to a css string wrapped in a module', function (t) {
   transformExampleFile("test.styl", null, function (transformed) {
     t.equal(
       transformed,
-      "module.exports = \"body{color:rgba(255,255,255,0.5)}\"\n"
+      "module.exports = \"body{color:rgba(255,255,255,0.5)}\";"
     );
 
     t.notOk(/sourceMappingURL/.test(transformed), "source map is not included");
@@ -40,7 +37,7 @@ test("it doesn't compress the css if compress is set to true", function (t) {
   transformExampleFile("test.styl", options, function (transformed) {
     t.equal(
       transformed,
-      "module.exports = \"body {\\n  color: rgba(255,255,255,0.5);\\n}\\n\"\n"
+      "module.exports = \"body {\\n  color: rgba(255,255,255,0.5);\\n}\";"
     );
   });
 });
