@@ -42,5 +42,49 @@
     "url": "https://github.com/DamonOehlman/stylify/issues"
   },
   "homepage": "https://github.com/DamonOehlman/stylify",
-  "author": "Damon Oehlman <damon.oehlman@gmail.com>"
+  "author": "Damon Oehlman <damon.oehlman@gmail.com>",
+  "contributors": [
+    {
+      "url": "https://github.com/mikeybox",
+      "contributions": 1,
+      "additions": 53,
+      "deletions": 5
+    },
+    {
+      "name": "contra",
+      "email": "contra@wearefractal.com",
+      "url": "https://github.com/contra",
+      "contributions": 1,
+      "additions": 23,
+      "deletions": 15,
+      "hireable": false
+    },
+    {
+      "name": "Damon Oehlman",
+      "email": "damon.oehlman@gmail.com",
+      "url": "https://github.com/DamonOehlman",
+      "contributions": 30,
+      "additions": 320,
+      "deletions": 145,
+      "hireable": false
+    },
+    {
+      "name": "Nikita Litvin",
+      "email": "deltaidea@derpy.ru",
+      "url": "https://github.com/deltaidea",
+      "contributions": 1,
+      "additions": 5,
+      "deletions": 2,
+      "hireable": true
+    },
+    {
+      "name": "Felix",
+      "email": "",
+      "url": "https://github.com/felixhageloh",
+      "contributions": 8,
+      "additions": 264,
+      "deletions": 111,
+      "hireable": false
+    }
+  ]
 }
