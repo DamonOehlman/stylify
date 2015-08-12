@@ -61,7 +61,11 @@ test("it plays nicely with nib", function (t) {
   var options = {
     use: [
       nib()
-    ]
+    ],
+    set: {
+      compress: true,
+      sourcemap: false
+    }
   };
 
   transformExampleFile("test.styl", options, function (transformed) {
@@ -69,7 +73,5 @@ test("it plays nicely with nib", function (t) {
       transformed,
       "module.exports = \"body{color:rgba(255,255,255,0.5)}\";"
     );
-
-    t.notOk(/sourceMappingURL/.test(transformed), "source map is not included");
   });
 });
