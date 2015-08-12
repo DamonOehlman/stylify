@@ -60,14 +60,12 @@ function resolveUses(uses) {
   if (!isArray(uses)) {
     uses = [uses];
   }
+
   return uses.map(function(mod) {
     if (typeof mod === 'string') {
       mod = require(resolve.sync(mod, {
         basedir: process.cwd()
       }));
-    }
-    if (typeof mod === 'function') {
-      mod = mod();
     }
     return mod;
   });
