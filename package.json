@@ -13,10 +13,12 @@
     "through2": "^2.0.0"
   },
   "devDependencies": {
+    "autoprefixer": "^5.2.0",
     "concat-stream": "^1.4.7",
     "crel": "^2.1.8",
     "insert-css": "^0.2.0",
-    "tap": "^0.6.0"
+    "nib": "^1.1.0",
+    "tap": "^1.3.2"
   },
   "scripts": {
     "start": "beefy examples/simple.js -- -t ./",

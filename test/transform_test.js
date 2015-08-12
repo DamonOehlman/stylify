@@ -1,7 +1,8 @@
 var test    = require("tap").test
   , fs      = require('fs')
   , path    = require('path')
-  , concat = require('concat-stream')
+  , concat  = require('concat-stream')
+  , nib     = require('nib')
   , stylify = require('..');
 
 
@@ -51,5 +52,24 @@ test("it includes inline source maps if enabled", function (t) {
 
   transformExampleFile("test.styl", options, function (transformed) {
     t.ok(/sourceMappingURL/.test(transformed), "source map is included");
+  });
+});
+
+test("it plays nicely with nib", function (t) {
+  t.plan(1);
+
+  var options = {
+    use: [
+      nib()
+    ]
+  };
+
+  transformExampleFile("test.styl", options, function (transformed) {
+    t.equal(
+      transformed,
+      "module.exports = \"body{color:rgba(255,255,255,0.5)}\";"
+    );
+
+    t.notOk(/sourceMappingURL/.test(transformed), "source map is not included");
   });
 });
