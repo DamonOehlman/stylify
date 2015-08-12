@@ -5,6 +5,7 @@ browserify v2 plugin for [stylus](https://github.com/LearnBoost/stylus).
 
 [![NPM](https://nodei.co/npm/stylify.png)](https://nodei.co/npm/stylify/)
 
+[![Build Status](https://travis-ci.org/DamonOehlman/stylify.svg)](https://travis-ci.org/DamonOehlman/stylify)
 [![unstable](https://img.shields.io/badge/stability-unstable-yellowgreen.svg)](https://github.com/dominictarr/stability#unstable)
 
 ## Example Usage
