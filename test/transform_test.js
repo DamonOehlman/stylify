@@ -27,7 +27,7 @@ test('stylify transforms to a css string wrapped in a module', function (t) {
   });
 });
 
-test("it doesn't compress the css if compress is set to true", function (t) {
+test("it doesn't compress the css if compress is set to false", function (t) {
   t.plan(1);
 
   var options = {
