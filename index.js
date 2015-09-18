@@ -8,7 +8,8 @@ var stylus = require('stylus'),
   flatten = require('lodash.flatten'),
   uniq = require('lodash.uniq'),
   merge = require('lodash.merge'),
-  isArray = require('lodash.isarray');
+  isArray = require('lodash.isarray'),
+  union = require('lodash.union');
 
 var defaultOptions = {
   set: {
@@ -122,6 +123,8 @@ module.exports = function (file, options) {
 
   options = merge(packageOptions, options || {});
   options.use = resolveUses(options.use);
+
+  options.set.paths = union(module.paths, options.set.paths); // support lookup via package system (node_modules)
   options.set.paths = parsePaths(options.set.paths);
 
   function write(buf, enc, cb) {
