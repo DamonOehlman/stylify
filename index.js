@@ -8,7 +8,7 @@ var stylus = require('stylus'),
   flatten = require('lodash.flatten'),
   uniq = require('lodash.uniq'),
   merge = require('lodash.merge'),
-  isArray = require('lodash.isarray'),
+  isArray = require('lodash.isarray');
 
 var defaultOptions = {
   set: {
