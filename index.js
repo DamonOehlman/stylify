@@ -9,7 +9,6 @@ var stylus = require('stylus'),
   uniq = require('lodash.uniq'),
   merge = require('lodash.merge'),
   isArray = require('lodash.isarray'),
-  defaults = require('lodash.defaultsdeep');
 
 var defaultOptions = {
   set: {
@@ -117,7 +116,8 @@ module.exports = function (file, options) {
 
   var data = '';
   var packageOptions = merge(
-    defaults({}, defaultOptions),
+    {}, 
+    defaultOptions,
     getPackageOptions()
   );
 
