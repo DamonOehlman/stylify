@@ -116,6 +116,7 @@ module.exports = function (file, options) {
 
   var data = '';
   var packageOptions = merge(
+    {}, 
     defaultOptions,
     getPackageOptions()
   );
