@@ -12,10 +12,10 @@
     "through2": "^2.0.0"
   },
   "devDependencies": {
-    "autoprefixer": "^5.2.0",
+    "autoprefixer": "^6.7.4",
     "concat-stream": "^1.4.7",
-    "crel": "^2.1.8",
-    "insert-css": "^0.2.0",
+    "crel": "^3.0.0",
+    "insert-css": "^2.0.0",
     "nib": "1.1.2",
     "tap": "^10.2.0"
   },
