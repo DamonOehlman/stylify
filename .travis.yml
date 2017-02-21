@@ -1,7 +1,7 @@
 language: node_js
 node_js:
-  - stable
-  - iojs
+  - 6 # lts (boron)
+  - 7 # stable
 
 notifications:
   email:
