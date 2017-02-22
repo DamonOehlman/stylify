@@ -7,8 +7,7 @@ var stylus = require('stylus'),
   resolve = require('resolve'),
   flatten = require('lodash.flatten'),
   uniq = require('lodash.uniq'),
-  merge = require('lodash.merge'),
-  isArray = require('lodash.isarray');
+  merge = require('lodash.merge');
 
 var defaultOptions = {
   set: {
@@ -50,14 +49,14 @@ function getPackageOptions() {
 }
 
 function parsePaths(paths) {
-  paths = isArray(paths) ? paths : [];
+  paths = Array.isArray(paths) ? paths : [];
   return uniq(flatten(paths.map(function(path) {
     return glob.sync(path);
   })));
 }
 
 function resolveUses(uses) {
-  if (!isArray(uses)) {
+  if (!Array.isArray(uses)) {
     uses = [uses];
   }
 
@@ -75,7 +74,7 @@ function applyOptions(stylus, options) {
   ['set', 'include', 'import', 'define', 'use'].forEach(function(method) {
     var option = options[method];
 
-    if (isArray(option)) {
+    if (Array.isArray(option)) {
       for (var i = 0; i < option.length; i++)
         stylus[method](option[i]);
     } else {
